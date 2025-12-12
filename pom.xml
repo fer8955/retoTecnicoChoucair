@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -15,10 +14,10 @@
         <selenium.version>4.25.0</selenium.version>
         <webdrivermanager.version>5.4.1</webdrivermanager.version>
         <cucumber.version>7.3.4</cucumber.version>
+        <skip.cucumber.reporting>false</skip.cucumber.reporting>
     </properties>
 
     <dependencies>
-
         <!-- Selenium -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -98,6 +97,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <skip>${skip.cucumber.reporting}</skip>
                             <projectName>QA Lab Selenium</projectName>
                             <outputDirectory>target/cucumber-report</outputDirectory>
                             <jsonFiles>
@@ -110,5 +110,15 @@
 
         </plugins>
     </build>
+
+    <!-- Profile para CI/Sonar, evita generar reportes -->
+    <profiles>
+        <profile>
+            <id>skip-cucumber</id>
+            <properties>
+                <skip.cucumber.reporting>true</skip.cucumber.reporting>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
