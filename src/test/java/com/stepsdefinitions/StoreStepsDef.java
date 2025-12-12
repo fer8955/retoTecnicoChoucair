@@ -7,6 +7,7 @@ import io.cucumber.java.es.Cuando;
 import io.cucumber.java.es.Dado;
 import io.cucumber.java.es.Entonces;
 import io.cucumber.java.es.Y;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -21,20 +22,8 @@ public class StoreStepsDef {
     @Before
     public void setUp(Scenario scenario) {
         this.scenario = scenario;
-
-        ChromeOptions options = new ChromeOptions();
-
-        // Activa headless SOLO si te mandan el flag desde GitHub Actions
-        if (System.getProperty("ci") != null) {
-            System.out.println("Running Chrome in HEADLESS mode (CI detected)");
-            options.addArguments("--headless=new");
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--disable-gpu");
-            options.addArguments("--window-size=1920,1080");
-        }
-
-        driver = new ChromeDriver(options);
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
     }
     @After

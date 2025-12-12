@@ -6,6 +6,7 @@ on:
   pull_request:
 
 jobs:
+
   sonar:
     runs-on: ubuntu-latest
 
@@ -27,10 +28,9 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-
   selenium-tests:
     runs-on: ubuntu-latest
-    needs: [ ]
+    needs: []   # Corre en paralelo al job 'sonar'
 
     steps:
       - uses: actions/checkout@v4
@@ -42,5 +42,20 @@ jobs:
           java-version: 21
           cache: maven
 
-      - name: Run selenium tests
+      # --- Instalar Google Chrome ---
+      - name: Install Chrome
+        uses: browser-actions/install-chrome@v1
+
+      # --- Instalar ChromeDriver ---
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+
+      # Verificar instalación (opcional pero útil)
+      - name: Check browser versions
+        run: |
+          google-chrome --version
+          chromedriver --version
+
+      # Ejecutar Selenium tests
+      - name: Run Selenium Tests
         run: mvn -B test
