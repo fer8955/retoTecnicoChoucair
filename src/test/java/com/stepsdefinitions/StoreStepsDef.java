@@ -11,8 +11,12 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
 
 public class StoreStepsDef {
     private static final Logger log = LoggerFactory.getLogger(StoreStepsDef.class);
@@ -48,7 +52,24 @@ public class StoreStepsDef {
 
     @Dado("estoy en la página de la tienda")
     public void estoyEnLaPáginaDeLaTienda() {
+
+        // Aumentar ventana (muy importante en GitHub Actions)
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+
         driver.get("https://qalab.bensg.com/store/");
+
+        // Esperar carga mínima del DOM
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
+
+        // Obtener HTML
+        String html = driver.getPageSource();
+
+        System.out.println("========== HTML OBTENIDO EN GITHUB ACTIONS ==========");
+        System.out.println(html.substring(0, Math.min(html.length(), 5000)));
+        System.out.println("========== FIN HTML (RECORTADO) ==========");
+
+        // Screenshot
         screenShot();
     }
 
