@@ -23,7 +23,7 @@ jobs:
       - name: SonarCloud Scan
         run: |
           mvn -B verify sonar:sonar -DskipTests=true -Pskip-cucumber \
-            -Dsonar.projectKey=fer8955_baseSelenium \
+            -Dsonar.projectKey=fer8955_retoTecnicoChoucair \
             -Dsonar.organization=fer8955 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
